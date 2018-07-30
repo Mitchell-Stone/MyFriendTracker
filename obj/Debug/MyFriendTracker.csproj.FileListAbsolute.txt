@@ -1,0 +1,10 @@
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\bin\Debug\MyFriendTracker.exe.config
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\bin\Debug\MyFriendTracker.exe
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\bin\Debug\MyFriendTracker.pdb
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.csprojResolveAssemblyReference.cache
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.Properties.Resources.resources
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.csproj.GenerateResource.Cache
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.csproj.CoreCompileInputs.cache
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.exe
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.pdb
+C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.MainWindow.resources
