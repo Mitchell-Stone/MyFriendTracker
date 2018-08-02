@@ -6,14 +6,24 @@
  *      Known Bugs:     None
  * */
 
+using System;
+
 namespace MyFriendTracker
 {
-    class Friend
+    class Friend : IComparable<Friend>
     {
+        //properties for the friend class
         public string Name { get; set; }
         public string Likes { get; set; }
         public string Dislikes { get; set; }
         public int BirthDay { get; set; }
         public int BirthMonth { get; set; }
+
+        //Used for the binary search
+        public int CompareTo(Friend other)
+        {
+            //
+            return this.Name.ToUpper().CompareTo(other.Name.ToUpper());
+        }
     }
 }

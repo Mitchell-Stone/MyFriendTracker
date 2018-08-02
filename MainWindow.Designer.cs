@@ -57,6 +57,8 @@
             this.dgv_friends = new System.Windows.Forms.DataGridView();
             this.lbl_message = new System.Windows.Forms.Label();
             this.btn_showAll = new System.Windows.Forms.Button();
+            this.tb_binarySearch = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_friends)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,11 +79,11 @@
             this.label2.BackColor = System.Drawing.Color.RoyalBlue;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(536, 55);
+            this.label2.Location = new System.Drawing.Point(441, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 20);
+            this.label2.Size = new System.Drawing.Size(93, 20);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Find:";
+            this.label2.Text = "Find Friend:";
             // 
             // label3
             // 
@@ -161,15 +163,15 @@
             this.btn_findFriend.Name = "btn_findFriend";
             this.btn_findFriend.Size = new System.Drawing.Size(147, 23);
             this.btn_findFriend.TabIndex = 11;
-            this.btn_findFriend.Text = "Find";
+            this.btn_findFriend.Text = "Find Friend";
             this.btn_findFriend.UseVisualStyleBackColor = true;
             this.btn_findFriend.Click += new System.EventHandler(this.btn_findFriend_Click);
             // 
             // tb_friendSearch
             // 
-            this.tb_friendSearch.Location = new System.Drawing.Point(586, 55);
+            this.tb_friendSearch.Location = new System.Drawing.Point(540, 55);
             this.tb_friendSearch.Name = "tb_friendSearch";
-            this.tb_friendSearch.Size = new System.Drawing.Size(100, 20);
+            this.tb_friendSearch.Size = new System.Drawing.Size(146, 20);
             this.tb_friendSearch.TabIndex = 10;
             // 
             // tb_friendName
@@ -339,16 +341,37 @@
             this.btn_showAll.Name = "btn_showAll";
             this.btn_showAll.Size = new System.Drawing.Size(147, 23);
             this.btn_showAll.TabIndex = 12;
-            this.btn_showAll.Text = "Show All";
+            this.btn_showAll.Text = "Show All Friends";
             this.btn_showAll.UseVisualStyleBackColor = true;
             this.btn_showAll.Click += new System.EventHandler(this.btn_showAll_Click);
             // 
-            // Form1
+            // tb_binarySearch
+            // 
+            this.tb_binarySearch.Location = new System.Drawing.Point(541, 354);
+            this.tb_binarySearch.Name = "tb_binarySearch";
+            this.tb_binarySearch.Size = new System.Drawing.Size(145, 20);
+            this.tb_binarySearch.TabIndex = 28;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.RoyalBlue;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label9.Location = new System.Drawing.Point(537, 330);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(141, 20);
+            this.label9.TabIndex = 29;
+            this.label9.Text = "Friends Full Name:";
+            // 
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(771, 592);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.tb_binarySearch);
             this.Controls.Add(this.btn_showAll);
             this.Controls.Add(this.lbl_message);
             this.Controls.Add(this.dgv_friends);
@@ -378,7 +401,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Form1";
+            this.Name = "MainWindow";
             this.Text = "Form1";
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_friends)).EndInit();
@@ -418,6 +441,8 @@
         private System.Windows.Forms.DataGridView dgv_friends;
         private System.Windows.Forms.Label lbl_message;
         private System.Windows.Forms.Button btn_showAll;
+        private System.Windows.Forms.TextBox tb_binarySearch;
+        private System.Windows.Forms.Label label9;
     }
 }
 

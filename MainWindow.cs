@@ -1,11 +1,10 @@
-﻿
-/*
+﻿/*
  *      Student Number: 0111005906
  *      Name:           Mitchell Stone
  *      Date:           30/07/2018
  *      Purpose:        Logic for displaying the data in the main window
  *      Known Bugs:     None
- * */
+ */
 
 using System;
 using System.Collections.Generic;
@@ -31,6 +30,9 @@ namespace MyFriendTracker
 
         //index counter
         int index = 0;
+
+        //to be used to store the identifier for the friend which is their name
+        string friendName;
 
         //Dictionary for months and ints releated to these months e.g. March = 3
         Dictionary<string, int> Months = new Dictionary<string, int>
@@ -69,7 +71,7 @@ namespace MyFriendTracker
             //add the friend to the scroll list
             scrollList.Add(friends.First());
             //update the datasource to show the changes
-            dgv_friends.DataSource = scrollList;
+            UpdateDatasource(scrollList);
         }
 
         private void btn_previousRecord_Click(object sender, EventArgs e)
@@ -90,9 +92,9 @@ namespace MyFriendTracker
                 index -= 1;
                 //add a friend from the given index
                 scrollList.Add(friends[index]);
-            }   
+            }
             //update the datasource to show the changes
-            dgv_friends.DataSource = scrollList;
+            UpdateDatasource(scrollList);
         }
 
         private void btn_nextRecord_Click(object sender, EventArgs e)
@@ -114,7 +116,7 @@ namespace MyFriendTracker
                 scrollList.Add(friends[index]);
             }
             //update the datasource to show the changes
-            dgv_friends.DataSource = scrollList;
+            UpdateDatasource(scrollList);
         }
 
         private void btn_lastRecord_Click(object sender, EventArgs e)
@@ -126,7 +128,7 @@ namespace MyFriendTracker
             //add the friend to the list
             scrollList.Add(friends.Last());
             //update the datasource to show the changes
-            dgv_friends.DataSource = scrollList;
+            UpdateDatasource(scrollList);
         }
 
         private void btn_exit_Click(object sender, EventArgs e)
@@ -148,7 +150,7 @@ namespace MyFriendTracker
             else if (MainWindowController.CheckIfExists(friends, tb_friendName.Text))
             {
                 //if someone with the name already exists, display message
-                MessageBox.Show("A friend with that name already exists, please try again", "Warning",
+                MessageBox.Show(string.Format("A friend with the name {0} already exists, please try again", tb_friendName.Text), "Warning",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
@@ -156,12 +158,17 @@ namespace MyFriendTracker
                 //add the friend to the database
                 Friend newFriend = MainWindowController.AddNewFriend(CreateFriendObject());
 
+                //update label to show that someone has been added
+                lbl_message.Text = String.Format("{0} has been added to your friends list", newFriend.Name);
+
                 //update the current list and update the datasource to show the change
                 if (newFriend != null)
                 {
                     friends.Add(newFriend);
-                    UpdateDatasource();
-                }  
+                    UpdateDatasource(friends);
+                }
+
+                ClearTextBoxes();
             }  
         }
 
@@ -173,24 +180,20 @@ namespace MyFriendTracker
                 MessageBox.Show("You have not selected a friend, please try again", "Warning",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else if (MainWindowController.CheckIfExists(friends, tb_friendName.Text) == false)
-            {
-                //checks if the person to be edited exists, if not display message
-                MessageBox.Show("There is no friend with the name " + tb_friendName.Text + " to edit, please try again", "Warning",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
             else
             {
                 //create a new friend object because all fields can be changed
                 friend = CreateFriendObject();
 
                 //update the database and return an updated list
-                friends = MainWindowController.EditFriend(friends, friend);
+                friends = MainWindowController.EditFriend(friends, friend, friendName);
 
                 //update the datasourse to show the changes
-                UpdateDatasource();
-            }
+                UpdateDatasource(friends);
 
+                //update the friend identifier for the currently selected friend
+                friendName = tb_friendName.Text;
+            }
         }
 
         private void btn_deleteFriend_Click(object sender, EventArgs e)
@@ -203,17 +206,29 @@ namespace MyFriendTracker
             ClearTextBoxes();
 
             //update the datasourse to show the changes
-            UpdateDatasource();
+            UpdateDatasource(friends);
         }
 
         private void btn_findFriend_Click(object sender, EventArgs e)
         {
-            //Get the name entered and display a message
-            friends = MainWindowController.FindFriend(tb_friendSearch.Text.ToUpper());
-            lbl_message.Text = String.Format("This is the details for {0}", tb_friendSearch.Text);
+            if (string.IsNullOrWhiteSpace(tb_friendSearch.Text))
+            {
+                //checks if there is data in the search box, if not display message
+                MessageBox.Show("There is no data entered in the search box, please try again.", "Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                //Get the name entered and display a message
+                tempList = MainWindowController.FindFriend(tb_friendSearch.Text);
+                lbl_message.Text = String.Format("Displaying all friends with {0} in their name.", tb_friendSearch.Text);
 
-            //update the datasourse to show the changes
-            UpdateDatasource();
+                //clear all the text boxes
+                ClearTextBoxes();
+
+                //update the datasourse to show the changes
+                UpdateDatasource(tempList);
+            }         
         }
 
         private void btn_showAll_Click(object sender, EventArgs e)
@@ -221,13 +236,62 @@ namespace MyFriendTracker
             //updates the friends list to contain all friends stored in the csv
             friends = MainWindowController.ShowAllFriends();
 
+            //clear the label
+            lbl_message.Text = "";
+
+            //clear all the text boxes
+            ClearTextBoxes();
+            tb_binarySearch.Clear();
+
             //update the datasourse to show the changes
-            UpdateDatasource();
+            UpdateDatasource(friends);
         }
 
         private void btn_binarySearch_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(tb_friendSearch.Text))
+            {
+                //checks if there is data in the search box, if not display message
+                MessageBox.Show("There is no data entered in the Binary Search box, please try again.", "Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                //should only conduct a binary search on an ordered list for it to be correct
+                //convert list to array
+                Friend[] sortedArray = friends.OrderBy(o => o.Name).ToArray();
 
+                /*conduct a binary search on the sorted array by creating a new friend object that contains only the name
+                  using the data entered into the binary search textbox */
+                int index = Array.BinarySearch(sortedArray, new Friend() { Name = tb_binarySearch.Text });
+
+                //if the friend exists, display on the datagridview
+                if (index < 0)
+                {
+                    lbl_message.Text = string.Format("You have no friends with the name {0}", tb_binarySearch.Text);                   
+                }
+                else
+                {
+                    //create a new friend object using the object found at the index of the sorted list
+                    Friend friend = new Friend()
+                    {
+                        Name = sortedArray[index].Name,
+                        Likes = sortedArray[index].Likes,
+                        Dislikes = sortedArray[index].Dislikes,
+                        BirthDay = sortedArray[index].BirthDay,
+                        BirthMonth = sortedArray[index].BirthMonth
+                    };
+                    //add the friend to the temp list and update the datasource
+                    tempList = new List<Friend> { friend };
+                    UpdateDatasource(tempList);
+
+                    //populate the text fields with the friend data
+                    PopulateTextBoxes(friend);
+
+                    //clear the label message
+                    lbl_message.Text = string.Format("All details being shown for {0}", sortedArray[index].Name);
+                }
+            }   
         }
 
         private void btn_birthdayInMonthOf_Click(object sender, EventArgs e)
@@ -237,7 +301,7 @@ namespace MyFriendTracker
             lbl_message.Text = String.Format("All birthdays in the month of {0}", cb_monthSelector.Text);
 
             //update the datasourse to show the changes
-            dgv_friends.DataSource = tempList;
+            UpdateDatasource(tempList);
             
         }
 
@@ -247,13 +311,12 @@ namespace MyFriendTracker
             {
                 //creates a friend object when a row is selected in the datagridview
                 friend = row.DataBoundItem as Friend;
+                
+                //use this to set the friend identifier
+                friendName = friend.Name;
 
                 //update the text boxes to show the selected friends details
-                tb_friendName.Text = friend.Name;
-                tb_friendLikes.Text = friend.Likes;
-                tb_friendDislikes.Text = friend.Dislikes;
-                tb_birthDay.Text = friend.BirthDay.ToString();
-                tb_birthMonth.Text = friend.BirthMonth.ToString();
+                PopulateTextBoxes(friend);
 
                 //get the index of the currently selected friend
                 index = friends.FindIndex(i => i.Name == friend.Name);
@@ -282,12 +345,13 @@ namespace MyFriendTracker
             tb_friendDislikes.Clear();
             tb_birthDay.Clear();
             tb_birthMonth.Clear();
+            tb_friendSearch.Clear();
         }
 
-        private void UpdateDatasource()
+        private void UpdateDatasource(List<Friend> list)
         {
             dgv_friends.DataSource = null;
-            dgv_friends.DataSource = friends;
+            dgv_friends.DataSource = list;
         }
 
         private Friend CreateFriendObject()
@@ -302,6 +366,16 @@ namespace MyFriendTracker
                 BirthMonth = Convert.ToInt32(tb_birthMonth.Text)
             };
             return friend;
+        }
+
+        private void PopulateTextBoxes(Friend friend)
+        {
+            //update the text boxes to show the selected friends details
+            tb_friendName.Text = friend.Name;
+            tb_friendLikes.Text = friend.Likes;
+            tb_friendDislikes.Text = friend.Dislikes;
+            tb_birthDay.Text = friend.BirthDay.ToString();
+            tb_birthMonth.Text = friend.BirthMonth.ToString();
         }
     }
 }

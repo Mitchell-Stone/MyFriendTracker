@@ -2,7 +2,7 @@
  *      Student Number: 0111005906
  *      Name:           Mitchell Stone
  *      Date:           30/07/2018
- *      Purpose:        Logic for collecting and sorting the data according to what is needed
+ *      Purpose:        Logic for collecting and sorting the data according to what is needed to be done
  *                      for the main window
  *      Known Bugs:     None
  * */
@@ -29,7 +29,7 @@ namespace MyFriendTracker
             foreach (Friend friend in friends)
             { 
                 //ToUpper is used so capitalization isnt an issue when searching
-                if (friend.Name.ToUpper().Contains(friendName))
+                if (friend.Name.ToUpper().Contains(friendName.ToUpper()))
                 {
                     search.Add(friend);
                     Debug.WriteLine(friend.Name);
@@ -107,7 +107,7 @@ namespace MyFriendTracker
         }
 
         //updates the current list of friends and then updates the database
-        public static List<Friend> EditFriend(List<Friend> friends, Friend friend)
+        public static List<Friend> EditFriend(List<Friend> friends, Friend friend, string comparison)
         {
             //first do a date check to see if it is valid
             if (DateCheck(friend.BirthDay, friend.BirthMonth))
@@ -116,7 +116,7 @@ namespace MyFriendTracker
                 foreach (Friend f in friends)
                 {
                     //ToUpper is used so capitalization isn't an isse when comparing
-                    if (f.Name.ToUpper() == friend.Name.ToUpper())
+                    if (f.Name.ToUpper() == comparison.ToUpper())
                     {
                         f.Name = friend.Name;
                         f.Likes = friend.Likes;
