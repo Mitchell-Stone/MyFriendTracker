@@ -45,12 +45,17 @@ namespace MyFriendTracker
         {
             InitializeComponent();
 
+            //collect all the friends and put them into a list
             friends = MainWindowController.ShowAllFriends();
+            
+            //sort the list by month ascending
+            friends = friends.OrderBy(o => o.BirthMonth).ToList();
 
             //set the data source for the datagridview so it knows what data to show
             dgv_friends.DataSource = friends;
             //resize the columns to fit
             dgv_friends.AutoResizeColumns();
+            //get the columns to fit the width of the data grid view
             dgv_friends.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //set the cells to read only
             dgv_friends.ReadOnly = true;
@@ -350,7 +355,9 @@ namespace MyFriendTracker
 
         private void UpdateDatasource(List<Friend> list)
         {
+            //set the data source to null
             dgv_friends.DataSource = null;
+            //set the data source to the new list entered to update the datagridview
             dgv_friends.DataSource = list;
         }
 
