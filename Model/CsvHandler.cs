@@ -10,15 +10,31 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace MyFriendTracker
 {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// <summary>   A CSV handler. </summary>
+    ///
+    /// <remarks>   , 16/08/2018. </remarks>
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
     class CsvHandler
     {
-        private string directory = @"C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\";
+        /// <summary>   File location </summary>
+        private string directory = @"C:\MyFriends\";
+        /// <summary>   Name of the CSV. </summary>
         private string csvName = "MyFriendData.csv";
-        
-        //read the csv and return a list of all the freinds within
+   
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Reads the CSV. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <returns>   The CSV. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public List<Friend> ReadCsv()
         {
             List<Friend> allFriends = new List<Friend>();
@@ -72,11 +88,21 @@ namespace MyFriendTracker
                     reader.Close();
                 }
             }
+
+            //sort the list by month ascending
+            allFriends = allFriends.OrderBy(o => o.BirthMonth).ToList();
             //return a list of all friends
             return allFriends;
         }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Alter CSV. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="editFriend">   The edit friend. </param>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //alter the data in the csv when changes are made
         public void AlterCsv(List<Friend> editFriend)
         {
             string fullPath = directory + csvName;
@@ -93,8 +119,15 @@ namespace MyFriendTracker
                 writer.Close();
             }
         }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Appends a CSV. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="newFriend">    The new friend. </param>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //add a new friend to the csv data
         public void AppendCsv(Friend newFriend)
         {
             string fullPath = directory + csvName;

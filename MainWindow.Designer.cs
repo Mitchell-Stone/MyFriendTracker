@@ -321,6 +321,7 @@
             // 
             this.dgv_friends.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_friends.Location = new System.Drawing.Point(44, 366);
+            this.dgv_friends.MultiSelect = false;
             this.dgv_friends.Name = "dgv_friends";
             this.dgv_friends.Size = new System.Drawing.Size(460, 214);
             this.dgv_friends.TabIndex = 26;

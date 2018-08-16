@@ -10,13 +10,29 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace MyFriendTracker
 {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// <summary>   A controller for handling main windows. </summary>
+    ///
+    /// <remarks>   , 16/08/2018. </remarks>
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
     class MainWindowController
     {
-        //returns a list of friends that contains the search value
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Searches for the first friend. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="friendName">   Name of the friend. </param>
+        ///
+        /// <returns>   The found friend. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static List<Friend> FindFriend(string friendName)
         {
             //read the csv file and put all of them into a list
@@ -39,7 +55,17 @@ namespace MyFriendTracker
             return search;
         }
 
-        //checks to see if a friends exists in the database
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Determine if exists. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="friends">  The friends. </param>
+        /// <param name="name">     The name. </param>
+        ///
+        /// <returns>   True if it succeeds, false if it fails. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static bool CheckIfExists(List<Friend> friends, string name)
         {
             bool check = false;
@@ -55,7 +81,16 @@ namespace MyFriendTracker
             return check;
         }
 
-        //adds a new friend to the database
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Adds a new friend. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="friend">   The friend. </param>
+        ///
+        /// <returns>   A Friend. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static Friend AddNewFriend(Friend friend)
         {
             //first do a date check to see if it is valid
@@ -74,7 +109,14 @@ namespace MyFriendTracker
             }
         }
 
-        //creates a list of all the friends in the database
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Shows all friends. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <returns>   A List&lt;Friend&gt; </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static List<Friend> ShowAllFriends()
         {
             //create a new csv handler object
@@ -86,7 +128,16 @@ namespace MyFriendTracker
             return friends;
         }
 
-        //returns a list of friends in the given month
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Friends in month. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="month">    The month. </param>
+        ///
+        /// <returns>   A List&lt;Friend&gt; </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static List<Friend> FriendsInMonth(int month)
         {
             //read the csv file and put all friends into the list
@@ -106,16 +157,26 @@ namespace MyFriendTracker
             return birthdaysInMonth;
         }
 
-        //updates the current list of friends and then updates the database
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Edit friend. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="friends">      The friends. </param>
+        /// <param name="friend">       The friend. </param>
+        /// <param name="comparison">   The comparison. </param>
+        ///
+        /// <returns>   A List&lt;Friend&gt; </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static List<Friend> EditFriend(List<Friend> friends, Friend friend, string comparison)
         {
             //first do a date check to see if it is valid
             if (DateCheck(friend.BirthDay, friend.BirthMonth))
             {
-                //Get all the data from the text boxes and update the list
                 foreach (Friend f in friends)
                 {
-                    //ToUpper is used so capitalization isn't an isse when comparing
+                    //ToUpper is used so capitalization isn't an issue when comparing
                     if (f.Name.ToUpper() == comparison.ToUpper())
                     {
                         f.Name = friend.Name;
@@ -141,7 +202,17 @@ namespace MyFriendTracker
             return friends;
         }
 
-        //deletes the friend from the database
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Deletes the friend. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="friends">  The friends. </param>
+        /// <param name="name">     The name. </param>
+        ///
+        /// <returns>   A List&lt;Friend&gt; </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public static List<Friend> DeleteFriend(List<Friend> friends, string name)
         {
             //Get all the data from the text boxes and update the list
@@ -162,8 +233,18 @@ namespace MyFriendTracker
             }
             return friends;
         }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Date check. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="day">      The day. </param>
+        /// <param name="month">    The month. </param>
+        ///
+        /// <returns>   True if it succeeds, false if it fails. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        //checks the date entered to make sure that it is valid
         private static bool DateCheck(int day, int month)
         {
             //create a date string for parsing
@@ -186,6 +267,73 @@ namespace MyFriendTracker
                 //else the date is valid
                 return true;
             }
+        }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Binary search. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <param name="friends">      The friends. </param>
+        /// <param name="searchValue">  The search value. </param>
+        ///
+        /// <returns>   A List&lt;Friend&gt; </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public List<Friend> BinarySearch(List<Friend> friends, string searchValue)
+        {
+            List<Friend> searchList = new List<Friend>();
+            //should only conduct a binary search on an ordered list for it to be correct
+            //convert list to array
+            Friend[] sortedArray = friends.OrderBy(o => o.Name).ToArray();
+
+            /*
+             * conduct a binary search on the sorted array by creating a new friend object that contains only the name
+             * using the data entered into the binary search textbox 
+             */
+            int index = Array.BinarySearch(sortedArray, new Friend() { Name = searchValue });
+
+            //if the friend exists, add them to the list
+            if (index < 0)
+            {
+                //if index is less that zero, this means that the friend does not exist
+                searchList = null;
+            }
+            else
+            {
+                //create a new friend object using the object found at the index of the sorted list
+                Friend friend = new Friend()
+                {
+                    Name = sortedArray[index].Name,
+                    Likes = sortedArray[index].Likes,
+                    Dislikes = sortedArray[index].Dislikes,
+                    BirthDay = sortedArray[index].BirthDay,
+                    BirthMonth = sortedArray[index].BirthMonth
+                };
+                //add the friend to the list
+                searchList.Add(friend);
+            }
+            return searchList;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Sort friends. </summary>
+        ///
+        /// <remarks>   , 16/08/2018. </remarks>
+        ///
+        /// <returns>   The sorted friends. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public static List<Friend> SortFriends(List<Friend> friends)
+        {
+            return friends.OrderBy(o => o.BirthMonth).ToList();
+        }
+
+        public static void DateInputCheck(string check)
+        {
+            int number;
+            bool isNumber = Int32.TryParse(check, out number);
+
         }
     }
 }
