@@ -8,3 +8,12 @@ C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\D
 C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.exe
 C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.pdb
 C:\Users\0111005906\Desktop\C# Assessments\MyFriendTracker\MyFriendTracker\obj\Debug\MyFriendTracker.MainWindow.resources
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\obj\Debug\MyFriendTracker.MainWindow.resources
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\obj\Debug\MyFriendTracker.Properties.Resources.resources
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\obj\Debug\MyFriendTracker.csproj.GenerateResource.Cache
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\obj\Debug\MyFriendTracker.csproj.CoreCompileInputs.cache
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\bin\Debug\MyFriendTracker.exe.config
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\bin\Debug\MyFriendTracker.exe
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\bin\Debug\MyFriendTracker.pdb
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\obj\Debug\MyFriendTracker.exe
+C:\Users\mitch\OneDrive\Documents\MyFriendTracker\obj\Debug\MyFriendTracker.pdb

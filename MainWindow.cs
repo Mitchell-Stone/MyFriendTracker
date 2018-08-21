@@ -195,41 +195,54 @@ namespace MyFriendTracker
 
         private void btn_newFriend_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tb_friendName.Text) || string.IsNullOrWhiteSpace(tb_friendLikes.Text) ||
-                string.IsNullOrWhiteSpace(tb_friendDislikes.Text) || string.IsNullOrWhiteSpace(tb_birthMonth.Text) ||
-                string.IsNullOrWhiteSpace(tb_birthDay.Text))
+            try
             {
-                //if any of the textboxes are empty, display a message
-                MessageBox.Show("You have not entered all the relevant details, please try again", "Warning",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else if (MainWindowController.CheckIfExists(friends, tb_friendName.Text))
-            {
-                //if someone with the name already exists, display message
-                MessageBox.Show(string.Format("A friend with the name {0} already exists, please try again", tb_friendName.Text), "Warning",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
-                //add the friend to the database
-                Friend newFriend = MainWindowController.AddNewFriend(CreateFriendObject());
-
-                //update label to show that someone has been added
-                lbl_message.Text = String.Format("{0} has been added to your friends list", newFriend.Name);
-
-                //update the current list and update the datasource to show the change
-                if (newFriend != null)
+                if (string.IsNullOrWhiteSpace(tb_friendName.Text) || string.IsNullOrWhiteSpace(tb_friendLikes.Text) ||
+                    string.IsNullOrWhiteSpace(tb_friendDislikes.Text) || string.IsNullOrWhiteSpace(tb_birthMonth.Text) ||
+                    string.IsNullOrWhiteSpace(tb_birthDay.Text))
                 {
-                    friends.Add(newFriend);
-                    //sort the list by month ascending and update the data source
-                    friends = MainWindowController.SortFriends(friends);
-                    UpdateDatasource(friends);
-
-                    //select the new friend
-                    SelectRow(friends.FindIndex(x => x.Name == newFriend.Name));
+                    //if any of the textboxes are empty, display a message
+                    MessageBox.Show("You have not entered all the relevant details, please try again", "Warning",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                ClearTextBoxes();
-            }  
+                else if (MainWindowController.CheckIfExists(friends, tb_friendName.Text))
+                {
+                    //if someone with the name already exists, display message
+                    MessageBox.Show(string.Format("A friend with the name {0} already exists, please try again", tb_friendName.Text), "Warning",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    //add the friend to the database
+                    Friend newFriend = MainWindowController.AddNewFriend(CreateFriendObject());
+
+                    //update label to show that someone has been added
+                    lbl_message.Text = String.Format("{0} has been added to your friends list", newFriend.Name);
+
+                    //update the current list and update the datasource to show the change
+                    if (newFriend != null)
+                    {
+                        friends.Add(newFriend);
+                        //sort the list by month ascending and update the data source
+                        friends = MainWindowController.SortFriends(friends);
+                        UpdateDatasource(friends);
+
+                        //select the new friend
+                        SelectRow(friends.FindIndex(x => x.Name == newFriend.Name));
+                    }
+                    ClearTextBoxes();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //checks if there is data in the search box, if not display message
+                MessageBox.Show("You have entered an incorrect date, please try again.", "Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                tb_birthDay.Clear();
+                tb_birthMonth.Clear();
+                Debug.WriteLine(ex);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -521,15 +534,14 @@ namespace MyFriendTracker
 
         private Friend CreateFriendObject()
         {
-            MainWindowController.DateInputCheck(tb_birthDay.Text);
             //create and return a new friend object using the data in the text boxes
             Friend newFriend = new Friend()
             {
                 Name = tb_friendName.Text,
                 Likes = tb_friendLikes.Text,
                 Dislikes = tb_friendDislikes.Text,
-                BirthDay = check(MainWindowController.DateInputCheck(tb_birthDay.Text)),
-                BirthMonth = MainWindowController.DateInputCheck(tb_birthMonth.Text)
+                BirthDay = Convert.ToInt32(tb_birthDay.Text),
+                BirthMonth = Convert.ToInt32(tb_birthMonth.Text)
             };
             return newFriend;
         }

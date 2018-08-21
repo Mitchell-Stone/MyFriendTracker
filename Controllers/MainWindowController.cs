@@ -328,12 +328,5 @@ namespace MyFriendTracker
         {
             return friends.OrderBy(o => o.BirthMonth).ToList();
         }
-
-        public static void DateInputCheck(string check)
-        {
-            int number;
-            bool isNumber = Int32.TryParse(check, out number);
-
-        }
     }
 }
